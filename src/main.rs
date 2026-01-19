@@ -12,7 +12,7 @@ struct ServerData
     stream: TcpStream
 }
 
-fn open_connetion(ip: &str, port: u32) -> Option<ServerData>
+fn open_connection(ip: &str, port: u32) -> Option<ServerData>
 {
     let mut address = String::new();
     address += ip;
@@ -153,7 +153,7 @@ fn main()
     let client_id = Uuid::new_v4();
     println!("Client ID is {:?}", client_id);
 
-    let mut server = open_connetion("192.168.100.20", 6969).unwrap();
+    let mut server = open_connection("192.168.100.20", 6969).unwrap();
     let data = make_connection(&mut server, client_id).unwrap();
 
     let n: BigUint = BigUint::from_bytes_be(&data.modulus[..]);
@@ -161,7 +161,7 @@ fn main()
     let mut rng = rand::thread_rng();
     let pub_key = RsaPublicKey::new(n, e).unwrap();
 
-    let user = "Andrispowq";
+    let user = "test";
     let pass = b"password";
     let pass_enc = pub_key.encrypt(&mut rng, Pkcs1v15Encrypt, &pass[..]).unwrap();
     let pass_encrypted = encode(pass_enc);
